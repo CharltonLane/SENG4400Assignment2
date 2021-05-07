@@ -4,8 +4,24 @@ body {
 
 h1, h2 {
   text-align: center;
+  margin: 6px;
+}
+
+h3 {
+  margin: 6px;
+}
+
+p {
+  margin: 2px;
+}
+
+.answer {
+  font-size: x-small;
 }
 
 .result {
-  font-size: x-small;
+  background-color: lavender;
+  border: cornflowerblue solid 2px;
+  border-radius: 4px;
+  margin: 2px;
 }

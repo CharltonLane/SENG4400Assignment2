@@ -18,9 +18,11 @@
 
     <div class="results">
         {% for past_answer in past_answers %}
-            <p class="result">{{ past_answer["answer"] }}</p>
-            <p>The above took {{ past_answer["time_taken"] }} ms to calculate.</p>
-            <hr/>
+            <div class="result">
+                <h3>Result.</h3>
+                <p class="answer">{{ past_answer["answer"] }}</p>
+                <p>This took {{ past_answer["time_taken"] }} ms to calculate.</p>
+            </div>
         {% endfor %}
     </div>
 </body>
