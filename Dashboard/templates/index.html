@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Force the page to refresh every second. -->
+    <!--<meta http-equiv="refresh" content="1">-->
+</head>
+<body>
+
+    <h1>Prime number generator dashboard</h1>
+
+    <h2>Showing up to the last 50 answers</h2>
+
+    <div class="results">
+        {% for past_answer in past_answers %}
+            <p class="result">{{ past_answer["answer"] }}</p>
+            <p>The above took {{ past_answer["time_taken"] }} ms to calculate.</p>
+            <hr/>
+        {% endfor %}
+    </div>
+</body>
+</html>
