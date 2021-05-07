@@ -40,16 +40,16 @@ def callback(message):
         output_message = generate_message(answer, time_taken)
         print(output_message)
 
-        response = requests.post('http://127.0.0.1:5000/dashboard', json=output_message)
+        response = requests.post('https://c3299743seng4400a2.ts.r.appspot.com/dashboard', json=output_message)
         print("Response: ", response)
 
 
 def main():
     # Set authentication credentials environment variable.
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "totemic-carrier-313004-2b48dbdd22fe.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "c3299743seng4400a2-bc323ed679a2.json"
 
-    project_id = "totemic-carrier-313004"
-    subscription_id = "SENG4400A2PubSub-sub"
+    project_id = "c3299743seng4400a2"
+    subscription_id = "PubSubQueue-sub"
 
     # Number of seconds the subscriber should listen for messages
     timeout = 5.0

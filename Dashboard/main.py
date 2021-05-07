@@ -5,7 +5,7 @@ import os
 from google.cloud import datastore
 
 # Set authentication credentials environment variable.
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "totemic-carrier-313004-2b48dbdd22fe.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "c3299743seng4400a2-bc323ed679a2.json"
 
 datastore_client = datastore.Client()
 
