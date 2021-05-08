@@ -1,10 +1,15 @@
-import math
 import os
 import json
 import time
 import requests
 
 from google.cloud import pubsub_v1
+
+target_api = os.environ.get("TARGET_API", "https://c3299743seng4400a2.ts.r.appspot.com/dashboard")
+# target_api = 'https://127.0.0.1:5000/dashboard' #  Debug code to test locally.
+
+# Set authentication credentials environment variable.
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "c3299743seng4400a2-bc323ed679a2.json"
 
 
 # I did not write this function. See the stackoverflow link for source.
@@ -27,7 +32,7 @@ def callback(message):
     # Read the message.
     message_data = json.loads(message.data)
 
-    if message_data["question"] < 1000000:
+    if message_data["question"] <= 1000000:  # Ignore any question greater than 1000000
         message.ack()
 
         # Generate primes and measure the time taken.
@@ -40,14 +45,11 @@ def callback(message):
         output_message = generate_message(answer, time_taken)
         print(output_message)
 
-        response = requests.post('https://c3299743seng4400a2.ts.r.appspot.com/dashboard', json=output_message)
+        response = requests.post(target_api, json=output_message)
         print("Response: ", response)
 
 
 def main():
-    # Set authentication credentials environment variable.
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "c3299743seng4400a2-bc323ed679a2.json"
-
     project_id = "c3299743seng4400a2"
     subscription_id = "PubSubQueue-sub"
 
@@ -60,7 +62,6 @@ def main():
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
     streaming_pull_future = subscriber.subscribe(subscription_path, callback=callback)
-    #print(f"Listening for messages on {subscription_path}..\n")
 
     while True:
         # Wrap subscriber in a 'with' block to automatically call close() when done.
@@ -70,6 +71,5 @@ def main():
             streaming_pull_future.result()
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
