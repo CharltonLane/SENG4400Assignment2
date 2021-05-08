@@ -16,6 +16,11 @@
 
     <h2>Showing up to the last 50 answers</h2>
 
+     <form action="https://australia-southeast1-c3299743seng4400a2.cloudfunctions.net/SENG4400Server">
+         <button type="submit" formmethod="get">Generate 10 more entries</button>
+     </form>
+
+
     <div class="results">
         {% for past_answer in past_answers %}
             <div class="result">

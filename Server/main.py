@@ -26,7 +26,9 @@ def main():
     publisher = pubsub_v1.PublisherClient()
     topic_path = publisher.topic_path(project_id, topic_id)
 
-    while True:
+    cutoff = 10
+    while cutoff > 0:
+        cutoff -= 1
         data = create_message(random.randint(0, largest_random_number))
 
         print(data)
