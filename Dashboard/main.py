@@ -1,5 +1,5 @@
 import json
-
+import flask
 from flask import Flask, request, render_template, make_response
 import os
 from google.cloud import datastore
@@ -24,9 +24,21 @@ def fetch_answers(limit):
     return results
 
 
+@app.route('/get50Entries')
+def get_50_entries():
+    results = fetch_answers(50)
+
+    output = {"data": []}
+    for entry in results:
+        output["data"].append({"answer": entry["answer"], "time_taken": entry["time_taken"]})
+    print("Output of first 50: ", output)
+
+    return make_response(output, 200)
+
+
 @app.route('/getNewEntries')
-def getEntires():
-    results = fetch_answers(10)
+def get_new_entries():
+    results = fetch_answers(1)
     #print("Rweults: ", results)
 
     output = {"data": []}
@@ -36,10 +48,7 @@ def getEntires():
         output["data"].append({"answer": entry["answer"], "time_taken": entry["time_taken"]})
     print("Output: ", output)
 
-    return make_response(
-        output,
-        200,
-    )
+    return make_response(output, 200)
 
 
 @app.route('/dashboard', methods=['POST'])
@@ -54,16 +63,17 @@ def post_answer():
     store_answer(json_data)
     print("Completed processing of request.")
 
-    past_answers_from_db = fetch_answers(50)
+    #past_answers_from_db = fetch_answers(50)
 
-    return render_template('index.html', past_answers=past_answers_from_db)
+    return make_response(
+        "OK",
+        200,
+    )
 
 
 @app.route('/')
 def root():
-    past_answers_from_db = fetch_answers(50)
-
-    return render_template('index.html', past_answers=past_answers_from_db)
+    return render_template('index.html')
 
 
 

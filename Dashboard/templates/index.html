@@ -15,11 +15,13 @@
 
         <h2>Showing up to the last 50 answers</h2>
 
+        <button type="button" onclick="generate10NewItems();">Generate 10 more entries (JS)</button>
+
         <div id="vm">
 
             <div class="results">
                 <ul id="example-1">
-                    <li v-for="item in content.data" :key="content.data.answer">
+                    <li v-for="item in content.slice().reverse()" :key="content.answer">
 
                         <div class="result">
                             <h3>Result.</h3>
@@ -35,8 +37,6 @@
         <form action="https://australia-southeast1-c3299743seng4400a2.cloudfunctions.net/SENG4400Server">
             <button type="submit" formmethod="get">Generate 10 more entries</button>
         </form>
-
-
 
 
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
