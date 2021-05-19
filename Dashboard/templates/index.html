@@ -1,34 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <head>
+        <meta charset="UTF-8">
+        <title>Dashboard</title>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-    <!-- Force the page to refresh every second. -->
-    <!--<meta http-equiv="refresh" content="1">-->
-</head>
-<body>
+        <!-- Force the page to refresh every second. -->
+        <!--<meta http-equiv="refresh" content="1">-->
+    </head>
+    <body>
 
-    <h1>Prime number generator dashboard</h1>
+        <h1>Prime number generator dashboard</h1>
 
-    <h2>Showing up to the last 50 answers</h2>
+        <h2>Showing up to the last 50 answers</h2>
 
-     <form action="https://australia-southeast1-c3299743seng4400a2.cloudfunctions.net/SENG4400Server">
-         <button type="submit" formmethod="get">Generate 10 more entries</button>
-     </form>
+        <div id="vm">
 
+            <div class="results">
+                <ul id="example-1">
+                    <li v-for="item in content.data" :key="content.data.answer">
 
-    <div class="results">
-        {% for past_answer in past_answers %}
-            <div class="result">
-                <h3>Result.</h3>
-                <p class="answer">{{ past_answer["answer"] }}</p>
-                <p>This took {{ past_answer["time_taken"] }} ms to calculate.</p>
+                        <div class="result">
+                            <h3>Result.</h3>
+                            <p class="answer">[[item.answer]]</p>
+                            <p>This took [[item.time_taken]] ms to calculate.</p>
+                        </div>
+                    </li>
+                </ul>
             </div>
-        {% endfor %}
-    </div>
-</body>
+        </div>
+
+
+        <form action="https://australia-southeast1-c3299743seng4400a2.cloudfunctions.net/SENG4400Server">
+            <button type="submit" formmethod="get">Generate 10 more entries</button>
+        </form>
+
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </body>
 </html>
