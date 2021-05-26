@@ -9,7 +9,6 @@ from google.cloud import firestore
 # Set authentication credentials environment variable.
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "seng4400c3299743-c62a01a02db1.json"
 
-
 # Project ID is determined by the GCLOUD_PROJECT environment variable
 db = firestore.Client()
 
@@ -49,12 +48,12 @@ def fetch_50_answers():
 
 @app.route('/get50Entries', methods=['GET'])
 def get_50_entries():
-
+    print("Got request for the first 50.")
     results = fetch_50_answers()
 
     output = {"data": results}
 
-    print("Output of first 50: ", output)
+    #print("Output of first 50: ", output)
 
     return make_response(output, 200)
 
@@ -62,15 +61,12 @@ def get_50_entries():
 @app.route('/getNewEntries', methods=['POST'])
 def get_new_entries():
 
-    print("You're boy", request.json)
     time = request.json['lastCheckDate']/1000
-    print("The date and the time of the boys is ", time)
     results = fetch_answers(time)
-    print("Rweults: ", results)
 
     output = {"data": results}
 
-    print("Output: ", output)
+    #print("Output: ", output)
 
     return make_response(output, 200)
 
@@ -80,12 +76,10 @@ def get_new_entries():
 def post_answer():
     print("Got post request")
 
-    print("The json: ", request.json)
+    #print("The json: ", request.json)
 
     store_answer(request.json)
     print("Completed processing of request.")
-
-    #past_answers_from_db = fetch_answers(50)
 
     return make_response(
         "OK",
