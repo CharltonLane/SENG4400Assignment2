@@ -24,7 +24,7 @@
                     <li v-for="item in content.slice().reverse()" :key="content.answer">
 
                         <div class="result">
-                            <h3>Result.</h3>
+                            <h3>Question: [[item.question]], answered at [[new Date(item.time_generated*1000)]].</h3>
                             <p class="answer">[[item.answer]]</p>
                             <p>This took [[item.time_taken]] ms to calculate.</p>
                         </div>

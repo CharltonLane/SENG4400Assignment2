@@ -6,7 +6,7 @@ import requests
 from google.cloud import pubsub_v1
 
 target_api = os.environ.get("TARGET_API", "https://c3299743seng4400a2.ts.r.appspot.com/dashboard")
-# target_api = 'https://127.0.0.1:5000/dashboard' #  Debug code to test locally.
+target_api = 'http://127.0.0.1:5000/dashboard' #  Debug code to test locally.
 
 # Set authentication credentials environment variable.
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "c3299743seng4400a2-bc323ed679a2.json"
@@ -23,9 +23,9 @@ def primes(n):
     return [2] + [i for i in range(3, n, 2) if sieve[i]]
 
 
-def generate_message(answer, time_taken):
-    message = {"answer": answer, "time_taken": time_taken}
-    return json.dumps(message)
+def generate_message(question, answer, time_taken):
+    message = {"question": question, "answer": answer, "time_taken": time_taken, "time_generated": time.time()}
+    return message
 
 
 def callback(message):
@@ -42,7 +42,7 @@ def callback(message):
         time_taken = round(((end-start) * 1000))
 
         # Generate a message containing the primes and time taken to compute.
-        output_message = generate_message(answer, time_taken)
+        output_message = generate_message(message_data["question"], answer, time_taken)
         print(output_message)
 
         response = requests.post(target_api, json=output_message)
@@ -51,7 +51,7 @@ def callback(message):
 
 def main():
     project_id = "c3299743seng4400a2"
-    subscription_id = "PubSubQueue-sub"
+    subscription_id = "PubSubQueueForOffline-sub"
 
     # Number of seconds the subscriber should listen for messages
     timeout = 5.0

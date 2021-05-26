@@ -21,7 +21,7 @@ def create_message(random_number):
 
 def main():
     project_id = "c3299743seng4400a2"
-    topic_id = "PubSubQueue"
+    topic_id = "PubSubQueueForOffline"
 
     publisher = pubsub_v1.PublisherClient()
     topic_path = publisher.topic_path(project_id, topic_id)

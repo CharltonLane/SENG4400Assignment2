@@ -1,66 +1,88 @@
+import datetime
 import json
 import flask
 from flask import Flask, request, render_template, make_response
 import os
-from google.cloud import datastore
+from google.cloud import firestore
+
 
 # Set authentication credentials environment variable.
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "c3299743seng4400a2-bc323ed679a2.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "seng4400c3299743-c62a01a02db1.json"
 
-datastore_client = datastore.Client()
+
+# Project ID is determined by the GCLOUD_PROJECT environment variable
+db = firestore.Client()
+
+
 app = Flask(__name__)
 
 
 def store_answer(data):
-    entity = datastore.Entity(key=datastore_client.key('item'), exclude_from_indexes=("answer", "time_taken"))
-    entity.update(data)
-    datastore_client.put(entity)
+    doc_ref = db.collection(u'answersCollection').document(str(data['time_generated']))
+
+    data["new"] = True
+    doc_ref.set(data)
 
 
-def fetch_answers(limit):
-    query = datastore_client.query(kind='item')
-    results = query.fetch(limit=limit)
+def fetch_answers(last_time):
 
-    return results
+    docs = db.collection(u'answersCollection').where(u'time_generated', u'>=', last_time).stream()
+
+    output = []
+    for doc in docs:
+        print(f'{doc.id} => {doc.to_dict()}')
+        output.append(doc.to_dict())
+
+    return output
 
 
-@app.route('/get50Entries')
+def fetch_50_answers():
+    docs = db.collection(u'answersCollection').order_by("time_generated").limit(50).stream()
+
+    output = []
+    for doc in docs:
+        print(f'{doc.id} => {doc.to_dict()}')
+        output.append(doc.to_dict())
+
+    return output
+
+
+@app.route('/get50Entries', methods=['GET'])
 def get_50_entries():
-    results = fetch_answers(50)
 
-    output = {"data": []}
-    for entry in results:
-        output["data"].append({"answer": entry["answer"], "time_taken": entry["time_taken"]})
+    results = fetch_50_answers()
+
+    output = {"data": results}
+
     print("Output of first 50: ", output)
 
     return make_response(output, 200)
 
 
-@app.route('/getNewEntries')
+@app.route('/getNewEntries', methods=['POST'])
 def get_new_entries():
-    results = fetch_answers(1)
-    #print("Rweults: ", results)
 
-    output = {"data": []}
-    for entry in results:
-        #print(entry["answer"])
-        #print(entry["time_taken"])
-        output["data"].append({"answer": entry["answer"], "time_taken": entry["time_taken"]})
+    print("You're boy", request.json)
+    time = request.json['lastCheckDate']/1000
+    print("The date and the time of the boys is ", time)
+    results = fetch_answers(time)
+    print("Rweults: ", results)
+
+    output = {"data": results}
+
     print("Output: ", output)
 
     return make_response(output, 200)
+
 
 
 @app.route('/dashboard', methods=['POST'])
 def post_answer():
     print("Got post request")
 
-    request.get_data()
+    print("The json: ", request.json)
 
-    data = request.json
-    json_data = json.loads(data)
-
-    store_answer(json_data)
+    store_answer(request.json)
     print("Completed processing of request.")
 
     #past_answers_from_db = fetch_answers(50)

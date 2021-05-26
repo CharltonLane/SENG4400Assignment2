@@ -13,7 +13,8 @@ const vm = new Vue({ // Again, vm is our Vue instance's name for consistency.
     el: '#vm',
     delimiters: ['[[', ']]'],
     data: {
-        content: []
+        content: [],
+        lastAnswerCreationTime: new Date().getTime()
     },
     created (){
         this.fetchLast50Entries();
@@ -21,9 +22,26 @@ const vm = new Vue({ // Again, vm is our Vue instance's name for consistency.
     },
     methods: {
         async fetchNewEntries () {
-            const gResponse = await fetch(apiEndpoint);
+            console.log("gug" + this.lastAnswerCreationTime);
+
+            const gResponse = await fetch(apiEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify({
+                    "lastCheckDate": this.lastAnswerCreationTime
+                }) // The data
+            });
+
             const gObject = await gResponse.json();
             console.log("Got this: " + JSON.stringify( gObject));
+
+            this.lastAnswerCreationTime = new Date().getTime();
+            console.log(this.lastAnswerCreationTime)
+            // Go through the entries and add any new ones to content.
+            // Update the lastAnswerCreationTime.
+
             this.content = this.content.concat(gObject["data"]);
         },
         async fetchLast50Entries () {
