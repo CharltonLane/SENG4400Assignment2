@@ -6,6 +6,8 @@
 
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
         <!-- Force the page to refresh every second. -->
         <!--<meta http-equiv="refresh" content="1">-->
     </head>
@@ -15,36 +17,31 @@
         <h1>Prime number generator dashboard</h1>
         <h2>Showing up to the last 50 answers</h2>
 
-        <h2 class="studentName">Charlton Lane</h2>
+        <h2 class="studentName">Charlton Lane - C3299743</h2>
     </nav>
 
-
-
-
-        <button type="button" onclick="generate10NewItems();">
-            Generate 10 more entries (JS)
-        </button>
-            <div id="vm">
-
+        <div class="buttonRow">
+            <a onclick="generate10NewItems();">
+                GENERATE 10 ENTRIES
+            </a>
+            <a onclick="generate10NewItems();">
+                CLEAR ENTRIES
+            </a>
+        </div>
+        <div id="vm">
             <div class="results">
-                <ul id="example-1">
+                <ol id="example-1" type="1">
                     <li v-for="item in content.slice().reverse()" :key="content.answer">
 
                         <div class="result">
-                            <h3>Question: [[item.question]], answered at [[new Date(item.time_generated*1000)]].</h3>
+                            <h3>Question: [[item.question]]</h3>
                             <p class="answer">[[item.answer]]</p>
-                            <p>This took [[item.time_taken]] ms to calculate.</p>
+                            <p class="timeTaken">This took [[item.time_taken]] ms to calculate. Answered at [[new Date(item.time_generated*1000).toLocaleString()]].</p>
                         </div>
                     </li>
-                </ul>
+                </ol>
             </div>
         </div>
-
-
-        <form action="https://australia-southeast1-c3299743seng4400a2.cloudfunctions.net/SENG4400Server">
-            <button type="submit" formmethod="get">Generate 10 more entries</button>
-        </form>
-
 
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="{{ url_for('static', filename='script.js') }}"></script>

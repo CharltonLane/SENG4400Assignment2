@@ -1,6 +1,3 @@
-import datetime
-import json
-import flask
 from flask import Flask, request, render_template, make_response
 import os
 from google.cloud import firestore
@@ -11,75 +8,62 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "seng4400c3299743-c62a01a02db1.js
 
 # Project ID is determined by the GCLOUD_PROJECT environment variable
 db = firestore.Client()
-
-
 app = Flask(__name__)
 
 
 def store_answer(data):
     doc_ref = db.collection(u'answersCollection').document(str(data['time_generated']))
-
-    data["new"] = True
     doc_ref.set(data)
 
 
-def fetch_answers(last_time):
-
+def fetch_new_answers(last_time):
+    # Finds all answers with a time_generated later than the last time checked by the dashboard.
     docs = db.collection(u'answersCollection').where(u'time_generated', u'>=', last_time).stream()
 
-    output = []
-    for doc in docs:
-        print(f'{doc.id} => {doc.to_dict()}')
-        output.append(doc.to_dict())
-
-    return output
+    return get_data_from_docs(docs)
 
 
 def fetch_50_answers():
-    docs = db.collection(u'answersCollection').order_by("time_generated").limit(50).stream()
+    # Finds the 50 most recent answers (but they're in the wrong order).
+    docs = db.collection(u'answersCollection').order_by("time_generated",
+                                                        direction=firestore.Query.DESCENDING).limit(50).stream()
+    data = get_data_from_docs(docs)
+    data.reverse()  # Put them in the righter order, so newest are first.
 
+    return data
+
+
+def get_data_from_docs(docs):
     output = []
     for doc in docs:
         print(f'{doc.id} => {doc.to_dict()}')
         output.append(doc.to_dict())
-
     return output
 
+# ======== Routes ======== #
 
 @app.route('/get50Entries', methods=['GET'])
 def get_50_entries():
-    print("Got request for the first 50.")
-    results = fetch_50_answers()
-
-    output = {"data": results}
-
-    #print("Output of first 50: ", output)
+    # Pulls the 50 most recent entries from the firestore.
+    output = {"data": fetch_50_answers()}
 
     return make_response(output, 200)
 
 
 @app.route('/getNewEntries', methods=['POST'])
 def get_new_entries():
-
+    # Search for any entries that have been added since the given time.
     time = request.json['lastCheckDate']/1000
-    results = fetch_answers(time)
-
-    output = {"data": results}
-
-    #print("Output: ", output)
+    output = {"data": fetch_new_answers(time)}
 
     return make_response(output, 200)
 
 
-
 @app.route('/dashboard', methods=['POST'])
 def post_answer():
-    print("Got post request")
-
-    #print("The json: ", request.json)
-
+    # Receives and stores an answer that has been posted from the Client.
     store_answer(request.json)
-    print("Completed processing of request.")
+    #print("Completed processing of request.")
 
     return make_response(
         "OK",
@@ -89,6 +73,7 @@ def post_answer():
 
 @app.route('/')
 def root():
+    # Display the dashboard.
     return render_template('index.html')
 
 

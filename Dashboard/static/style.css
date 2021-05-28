@@ -1,21 +1,28 @@
 body {
-  font-family: "helvetica", sans-serif;
+  font-family: 'Roboto', 'helvetica', sans-serif;
   margin: 0;
   padding: 0;
+  background-color: #FAFAFA;
 }
 
 nav {
   background-color: #1A73E8;
+  box-shadow: 0 3px 4px 0 rgba(0,0,0,0.2);
+  position: relative;
 }
 
 h1 {
-  margin: 6px;
   display: inline-block;
   color: white;
   font-weight: normal;
   font-size: larger;
-  padding: 4px 0;
+  line-height: 48px;
+  height: 48px;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin: 0 20px;
 }
+
 h2 {
   display: inline-block;
   color: white;
@@ -23,45 +30,75 @@ h2 {
   font-size: medium;
 }
 
+h3 {
+  font-size: large;
+  margin: 6px 0;
+}
+
 .studentName {
   height: 100%;
   float: right;
+  padding-right: 20px;
 }
 
-h3 {
-  margin: 6px;
-}
 
 p {
-  margin: 2px;
+  margin: 2px 0 ;
+}
+
+.timeTaken {
+
+  color: gray;
+  font-size: medium;
 }
 
 .answer {
   font-size: x-small;
 }
 
-ul {
-  padding: 0;
-}
 
-li {
-  list-style-type: none;
+
+ol li::before {
+  content: counter(ordered-list-counter) ". ";
+  font-weight: bold;
+  font-size: 36px;
+  padding: 0 20px;
+  display: inline-block;
+  width: 40px;
+}
+ol {
+  list-style: none;
   padding: 0;
-  margin: 0;
+  counter-reset: ordered-list-counter;
+}
+ol li {
+  counter-increment: ordered-list-counter;
+  border-bottom: lightgray solid 1px;
+  box-shadow: 0 2px 4px 0 rgba(50,50,50,0.1), 0 -1px 4px 0 rgba(50,50,50,0.1);
+  margin-bottom: 10px;
+  background-color: white;
 }
 
 .result {
-  background-color: white;
+  display: inline-block;
   padding: 2px;
-  border-bottom: darkgray solid 1px;
 }
 
-button {
-  background-color: white;
+.buttonRow {
+  border-bottom: lightgray solid 1px;
+}
+
+a {
+  display: inline-block;
   border: none;
-  height: 60px;
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  padding: 0 24px;
+  border-bottom: rgba(0,0,0,0) solid 2px;
 }
 
-button:hover {
-  background-color: lightgray;
+a:hover {
+  background-color: #F0F0F0;
+  border-bottom: #1A73E8 solid 2px;
 }

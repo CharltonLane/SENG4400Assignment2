@@ -6,7 +6,7 @@ import requests
 from google.cloud import pubsub_v1
 
 target_api = os.environ.get("TARGET_API", "https://seng4400c3299743.ts.r.appspot.com/dashboard")
-#target_api = 'http://127.0.0.1:5000/dashboard' #  Debug code to test locally.
+target_api = 'http://127.0.0.1:5000/dashboard' #  Debug code to test locally.
 
 # Set authentication credentials environment variable.
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "seng4400c3299743-c62a01a02db1.json"

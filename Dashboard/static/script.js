@@ -1,11 +1,5 @@
 'use strict';
 
-window.addEventListener('load', function () {
-
-    console.log("Hello World!");
-
-});
-
 const apiEndpoint = "/getNewEntries"
 const apiEndpointGet50 = "/get50Entries"
 
@@ -22,7 +16,7 @@ const vm = new Vue({ // Again, vm is our Vue instance's name for consistency.
     },
     methods: {
         async fetchNewEntries () {
-            console.log("gug" + this.lastAnswerCreationTime);
+            //console.log("gug" + this.lastAnswerCreationTime);
 
             const gResponse = await fetch(apiEndpoint, {
                 method: 'POST',
@@ -35,19 +29,25 @@ const vm = new Vue({ // Again, vm is our Vue instance's name for consistency.
             });
 
             const gObject = await gResponse.json();
-            console.log("Got this: " + JSON.stringify( gObject));
+            //console.log("Got this: " + JSON.stringify( gObject));
 
-            this.lastAnswerCreationTime = new Date().getTime();
-            console.log(this.lastAnswerCreationTime)
-            // Go through the entries and add any new ones to content.
             // Update the lastAnswerCreationTime.
+            this.lastAnswerCreationTime = new Date().getTime();
 
+            // Remove the oldest results if we have 50 answers.
+            if (this.content.length >= 50) {
+                for (let i = 0; i < gObject["data"].length; i++){
+                    this.content.shift();
+                }
+            }
+
+            // Add this result to the end of the list.
             this.content = this.content.concat(gObject["data"]);
         },
         async fetchLast50Entries () {
             const gResponse = await fetch(apiEndpointGet50);
             const gObject = await gResponse.json();
-            console.log("Got this last 50: " + JSON.stringify( gObject));
+            //console.log("Got this last 50: " + JSON.stringify( gObject));
             this.content = gObject["data"];
         }
     }
