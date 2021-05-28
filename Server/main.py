@@ -11,7 +11,7 @@ publish_delay = int(os.environ.get("PUBLISH_DELAY", 1000))  # Default delay in m
 largest_random_number = int(os.environ.get("MAX_RANDOM_NUMBER", 1000000))  # Default maximum random number to generate.
 
 # Set authentication credentials environment variable.
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "c3299743seng4400a2-bc323ed679a2.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "seng4400c3299743-c62a01a02db1.json"
 
 
 def create_message(random_number):
@@ -20,8 +20,8 @@ def create_message(random_number):
 
 
 def main():
-    project_id = "c3299743seng4400a2"
-    topic_id = "PubSubQueueForOffline"
+    project_id = "seng4400c3299743"
+    topic_id = "PubSubQueueOfflineUse"
 
     publisher = pubsub_v1.PublisherClient()
     topic_path = publisher.topic_path(project_id, topic_id)
