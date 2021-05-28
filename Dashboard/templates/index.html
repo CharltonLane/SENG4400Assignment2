@@ -14,10 +14,10 @@
     <body>
 
     <nav>
-        <h1>Prime number generator dashboard</h1>
-        <h2>Showing up to the last 50 answers</h2>
+        <h1 class="navBarItem">Prime number generator dashboard</h1>
+        <p class="navBarItem">Showing up to the last 50 answers</p>
 
-        <h2 class="studentName">Charlton Lane - C3299743</h2>
+        <h2 class="studentName navBarItem">Charlton Lane - C3299743</h2>
     </nav>
 
         <div class="buttonRow">
@@ -34,8 +34,8 @@
                     <li v-for="item in content.slice().reverse()" :key="content.answer">
 
                         <div class="result">
-                            <h3>Question: [[item.question]]</h3>
-                            <p class="answer">[[item.answer]]</p>
+                            <h2>Question: [[item.question]]</h2>
+                            <p class="answer">Answer: [[item.answer]]</p>
                             <p class="timeTaken">This took [[item.time_taken]] ms to calculate. Answered at [[new Date(item.time_generated*1000).toLocaleString()]].</p>
                         </div>
                     </li>

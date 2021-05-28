@@ -12,28 +12,26 @@ nav {
 }
 
 h1 {
-  display: inline-block;
-  color: white;
   font-weight: normal;
   font-size: larger;
-  line-height: 48px;
-  height: 48px;
-  margin-block-start: 0;
-  margin-block-end: 0;
   margin: 0 20px;
 }
 
 h2 {
-  display: inline-block;
-  color: white;
   font-weight: normal;
   font-size: medium;
-}
-
-h3 {
-  font-size: large;
   margin: 6px 0;
 }
+
+.navBarItem {
+  display: inline-block;
+  color: white;
+  height: 48px;
+  line-height: 48px;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
 
 .studentName {
   height: 100%;
@@ -47,13 +45,11 @@ p {
 }
 
 .timeTaken {
-
   color: gray;
-  font-size: medium;
 }
 
 .answer {
-  font-size: x-small;
+  font-size: small;
 }
 
 
