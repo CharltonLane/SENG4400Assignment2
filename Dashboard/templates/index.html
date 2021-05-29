@@ -21,10 +21,21 @@
     </nav>
 
         <div class="buttonRow">
-            <a onclick="generate10NewItems();">
-                GENERATE 10 ENTRIES
+            <a href="javascript:generate1NewItem('ServerSingleSmall')">
+                GENERATE 1 SMALL ENTRY
             </a>
-            <a onclick="generate10NewItems();">
+            <a href="javascript:generate50NewItems('ServerSingleSmall')">
+                GENERATE 50 SMALL ENTRIES
+            </a>
+
+            <a href="javascript:generate1NewItem('ServerSingle')">
+                GENERATE 1 ENTRY
+            </a>
+            <a href="javascript:generate50NewItems('ServerSingle')">
+                GENERATE 50 ENTRIES
+            </a>
+
+            <a href="javascript:clearAllEntries()">
                 CLEAR ENTRIES
             </a>
         </div>
@@ -35,7 +46,12 @@
 
                         <div class="result">
                             <h2>Question: [[item.question]]</h2>
-                            <p class="answer">Answer: [[item.answer]]</p>
+
+
+                            <p class="answer" v-if="item.answer.length <= 700" >Answer: [[item.answer.join(', ')]]</p>
+                            <p class="answer" v-else >Answer: [[item.answer.slice(0, 700).join(', ')]]...</p>
+
+
                             <p class="timeTaken">This took [[item.time_taken]] ms to calculate. Answered at [[new Date(item.time_generated*1000).toLocaleString()]].</p>
                         </div>
                     </li>

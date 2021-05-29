@@ -6,7 +6,7 @@ body {
 }
 
 nav {
-  background-color: #1A73E8;
+  background-color: #0B9F61;
   box-shadow: 0 3px 4px 0 rgba(0,0,0,0.2);
   position: relative;
 }
@@ -60,7 +60,9 @@ ol li::before {
   font-size: 36px;
   padding: 0 20px;
   display: inline-block;
-  width: 40px;
+  width: 10%;
+  position: absolute;
+  left: 0;
 }
 ol {
   list-style: none;
@@ -73,6 +75,9 @@ ol li {
   box-shadow: 0 2px 4px 0 rgba(50,50,50,0.1), 0 -1px 4px 0 rgba(50,50,50,0.1);
   margin-bottom: 10px;
   background-color: white;
+  width:94%;
+  position: relative;
+  padding-left: 80px;
 }
 
 .result {
@@ -92,9 +97,11 @@ a {
   text-align: center;
   padding: 0 24px;
   border-bottom: rgba(0,0,0,0) solid 2px;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.66);
 }
 
 a:hover {
   background-color: #F0F0F0;
-  border-bottom: #1A73E8 solid 2px;
+  border-bottom: #0B9F61 solid 2px;
 }

@@ -21,14 +21,12 @@ def create_message(random_number):
 
 def main():
     project_id = "seng4400c3299743"
-    topic_id = "PubSubQueueOfflineUse"
+    topic_id = "PubSubQueue"
 
     publisher = pubsub_v1.PublisherClient()
     topic_path = publisher.topic_path(project_id, topic_id)
 
-    cutoff = 10
-    while cutoff > 0:
-        cutoff -= 1
+    while True:
         data = create_message(random.randint(0, largest_random_number))
 
         print(data)

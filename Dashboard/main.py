@@ -33,6 +33,19 @@ def fetch_50_answers():
     return data
 
 
+def delete_collection(coll_ref, batch_size):
+    docs = coll_ref.limit(batch_size).stream()
+    deleted = 0
+
+    for doc in docs:
+        print(f'Deleting doc {doc.id} => {doc.to_dict()}')
+        doc.reference.delete()
+        deleted = deleted + 1
+
+    if deleted >= batch_size:
+        return delete_collection(coll_ref, batch_size)
+
+
 def get_data_from_docs(docs):
     output = []
     for doc in docs:
@@ -55,8 +68,19 @@ def get_new_entries():
     # Search for any entries that have been added since the given time.
     time = request.json['lastCheckDate']/1000
     output = {"data": fetch_new_answers(time)}
+    print("Output: ", output)
 
     return make_response(output, 200)
+
+
+@app.route('/clearAllEntries')
+def clear_all_entries():
+    # Search for any entries that have been added since the given time.
+    delete_collection(db.collection(u'answersCollection'), 50)
+    print("Deleted firestore contents")
+
+    return make_response("OK", 200)
+
 
 
 @app.route('/dashboard', methods=['POST'])

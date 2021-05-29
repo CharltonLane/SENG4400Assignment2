@@ -2,6 +2,7 @@
 
 const apiEndpoint = "/getNewEntries"
 const apiEndpointGet50 = "/get50Entries"
+const apiEndpointClearEntries = "/clearAllEntries"
 
 const vm = new Vue({ // Again, vm is our Vue instance's name for consistency.
     el: '#vm',
@@ -30,31 +31,53 @@ const vm = new Vue({ // Again, vm is our Vue instance's name for consistency.
 
             const gObject = await gResponse.json();
             //console.log("Got this: " + JSON.stringify( gObject));
+            console.log("Got this many results: " + gObject["data"].length);
 
-            // Update the lastAnswerCreationTime.
-            this.lastAnswerCreationTime = new Date().getTime();
+
+            // Update the lastAnswerCreationTime to about ten seconds ago.
+            this.lastAnswerCreationTime = new Date().getTime() - 10000;
+
+            // Only add new results.
+            for (let i=0; i < gObject["data"].length; i++){
+                console.log("Ah")
+                if(!this.content.some(entry => entry.question === gObject["data"][i].question)){
+                    console.log("Pushed " + gObject["data"][i].question)
+                    this.content.push(gObject["data"][i]);
+                }
+            }
 
             // Remove the oldest results if we have 50 answers.
             if (this.content.length >= 50) {
-                for (let i = 0; i < gObject["data"].length; i++){
+                for (let i = 0; i < this.content.length-50; i++){
                     this.content.shift();
                 }
             }
 
-            // Add this result to the end of the list.
-            this.content = this.content.concat(gObject["data"]);
         },
         async fetchLast50Entries () {
             const gResponse = await fetch(apiEndpointGet50);
             const gObject = await gResponse.json();
             //console.log("Got this last 50: " + JSON.stringify( gObject));
             this.content = gObject["data"];
-        }
+        },
+
     }
 
 })
 
+const clearAllEntries = async () => {
+    await fetch(apiEndpointClearEntries);
+    vm.content = [];
+}
 
-const generate10NewItems = async () => {
-  const response = await fetch('https://australia-southeast1-c3299743seng4400a2.cloudfunctions.net/SENG4400Server');
+const generate50NewItems = async (cloudFunction) => {
+    for (let i=0; i < 50; i++) {
+        const response = await fetch('https://australia-southeast1-seng4400c3299743.cloudfunctions.net/' + cloudFunction);
+    }
+}
+
+const generate1NewItem = async (cloudFunction) => {
+    console.log("Asked for a new result")
+    const response = await fetch('https://australia-southeast1-seng4400c3299743.cloudfunctions.net/' + cloudFunction);
+    console.log(response)
 }
