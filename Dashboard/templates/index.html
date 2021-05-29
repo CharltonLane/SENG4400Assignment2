@@ -35,7 +35,7 @@
 
             <div class="results">
                 <ol id="example-1" type="1">
-                    <li v-for="item in content.slice().reverse()" :key="content.answer" v-on:click='item.expanded = !item.expanded'>
+                    <li v-for="item in content.slice().reverse()" :key="content.answer" v-on:click='item.expanded = !item.expanded; forceAnUpdate()'>
 
                         <div class="result">
                             <h2>Question: [[item.question]]</h2>

@@ -69,6 +69,9 @@ const vm = new Vue({ // Again, vm is our Vue instance's name for consistency.
 
             vm.isLoading = false;
         },
+        forceAnUpdate() {
+            this.$forceUpdate();
+        }
     }
 })
 
