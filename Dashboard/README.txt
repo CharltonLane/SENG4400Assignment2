@@ -1,6 +1,6 @@
 (Firefox crashes on some of the Google Cloud pages for me. Chrome was fine)
 
-==== To Create the web service on Google App Engine ====
+==== To create the web service on Google App Engine ====
 
 Choose the "App engine" button from the side panel
 Choose to create an application
@@ -16,11 +16,14 @@ This will deploy the Dashboard code to google cloud as a web app. It will take a
 
 
 
-==== To Run the program locally ==== 
+==== To run the Dashboard locally ====
 
 Open the Dashboard folder as a PyCharm project.
-Change the URL from "https://c3299743seng4400a2.ts.r.appspot.com/Dashboard" to "http://127.0.0.1:5000/Dashboard"
 
-Run main.py
-Open the URL that appears in the console, should be https://localhost:5000
-If there have been any items pushed from the Server to the Client via the queue while this app is running, they will appear here after the page refreshes.
+Run main.py using a flask server configuration.
+This should already be set up in the project but if not, create a new run configuration and choose "Flask server", set the target to the path of main.py and the working directory to the Dashboard folder.
+
+Open the URL that appears in the console after running, this should be http://localhost:5000 (http://127.0.0.1:5000)
+If there have been any items pushed from the Server to the Client via the queue while this app is running, they will appear on the dashboard. This can ONLY be done with local versions of Server and Client.
+
+It is also possible to use the buttons at the top of the dashboard to create new items, this is a lot slower due to latency so it will take a few seconds for changes to appear.

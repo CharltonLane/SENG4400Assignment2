@@ -1,5 +1,8 @@
-(Firefox crashes on some of the Google Cloud pages for me. Chrome was fine)
+Server README
 
+Charlton Lane
+C3299743
+SENG4400 Assignment 2
 
 
 ==== To create the Pub/Sub Queue ==== 
@@ -11,7 +14,7 @@ To become authorised to access the queue, you need to make a service account and
 Navigate to the IAM & Admin tab and select the Service Accounts sub-tab
 Click the "CREATE SERVICE ACCOUNT" button towards the top of the page
 1. Name it
-2. Select the Owner role under the Quick access label onthe "Role" dropdown
+2. Select the Owner role under the Quick access label on the "Role" dropdown
 Choose DONE
 
 Now Click on the email that is shown for the service account
@@ -26,7 +29,21 @@ To run the server you need to make sure the project_id and topic_id variables ar
 The JSON key file should also be placed inside the Server/ folder, and it's name is given so the environment variables can be set (2 lines up from where project_id is set).
 
 
-==== To Run the program ==== 
+==== To run the program ====
 
-Open the Server folder as a PyCharm project.
+Open the Server folder as a PyCharm project. The project is setup to use a virtual environment of python 3.8
 Run main.py
+
+The PubSub queue being used is called "PubSubQueueOfflineUse". The PubSub queue being used by the deployed app in part 4 is called "PubSubQueue".
+If you want to spam the deployed system with questions, change "PubSubQueueOfflineUse" to "PubSubQueue" on line 24.
+
+If there are any dependencies missing you can install them using the following command
+pip install -r requirements.txt
+
+
+==== Other ====
+
+The publish delay and maximum random number size are both configurable via environment variables. These are PUBLISH_DELAY and MAX_RANDOM_NUMBER respectively.
+
+cloud_function_single.py is a modified version of the Server that can be used as a Google Cloud Function. It only adds a single question to the queue.
+It also has code to handle being called as a request, and to support CORS

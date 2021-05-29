@@ -6,7 +6,6 @@ from google.cloud import firestore
 # Set authentication credentials environment variable.
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "seng4400c3299743-c62a01a02db1.json"
 
-# Project ID is determined by the GCLOUD_PROJECT environment variable
 db = firestore.Client()
 app = Flask(__name__)
 
@@ -20,14 +19,14 @@ def fetch_new_answers(last_time):
     # Finds all answers with a time_generated later than the last time checked by the dashboard.
     docs = db.collection(u'answersCollection').where(u'time_generated', u'>=', last_time).stream()
 
-    return get_data_from_docs(docs)
+    return pull_data_from_docs(docs)
 
 
 def fetch_50_answers():
     # Finds the 50 most recent answers (but they're in the wrong order).
     docs = db.collection(u'answersCollection').order_by("time_generated",
                                                         direction=firestore.Query.DESCENDING).limit(50).stream()
-    data = get_data_from_docs(docs)
+    data = pull_data_from_docs(docs)
     data.reverse()  # Put them in the righter order, so newest are first.
 
     return data
@@ -46,12 +45,13 @@ def delete_collection(coll_ref, batch_size):
         return delete_collection(coll_ref, batch_size)
 
 
-def get_data_from_docs(docs):
+def pull_data_from_docs(docs):
     output = []
     for doc in docs:
         print(f'{doc.id} => {doc.to_dict()}')
         output.append(doc.to_dict())
     return output
+
 
 # ======== Routes ======== #
 
@@ -87,18 +87,11 @@ def clear_all_entries():
 def post_answer():
     # Receives and stores an answer that has been posted from the Client.
     store_answer(request.json)
-    #print("Completed processing of request.")
 
-    return make_response(
-        "OK",
-        200,
-    )
+    return make_response("OK", 200)
 
 
 @app.route('/')
 def root():
     # Display the dashboard.
     return render_template('index.html')
-
-
-

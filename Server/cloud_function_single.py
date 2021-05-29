@@ -23,7 +23,7 @@ def main(request):
         # header and caches preflight response for 3600s
         headers = {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Methods': 'GET, POST',
             'Access-Control-Allow-Headers': '*',
             'Access-Control-Max-Age': '3600',
         }
@@ -35,7 +35,10 @@ def main(request):
         publisher = pubsub_v1.PublisherClient()
         topic_path = publisher.topic_path(project_id, topic_id)
 
-        data = create_message(random.randint(0, largest_random_number))
+        try:
+            data = create_message(random.randint(0, request.json["MAX_RANDOM_NUMBER"]))
+        except KeyError:
+            data = create_message(random.randint(0, largest_random_number))
 
         print(data)
 

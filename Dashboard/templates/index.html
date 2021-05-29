@@ -19,37 +19,30 @@
 
         <h2 class="studentName navBarItem">Charlton Lane - C3299743</h2>
     </nav>
-
-        <div class="buttonRow">
-            <a href="javascript:generate1NewItem('ServerSingleSmall')">
-                GENERATE 1 SMALL ENTRY
-            </a>
-            <a href="javascript:generate50NewItems('ServerSingleSmall')">
-                GENERATE 50 SMALL ENTRIES
-            </a>
-
-            <a href="javascript:generate1NewItem('ServerSingle')">
-                GENERATE 1 ENTRY
-            </a>
-            <a href="javascript:generate50NewItems('ServerSingle')">
-                GENERATE 50 ENTRIES
-            </a>
-
-            <a href="javascript:clearAllEntries()">
-                CLEAR ENTRIES
-            </a>
-        </div>
         <div id="vm">
+            <div class="buttonRow">
+                <!-- This terrible formatting is thanks to html putting a space between the a tags if there is a newline after each one. -->
+                <a href="javascript:generate1NewItem(1000)">CREATE 1 SMALL</a><a
+                    href="javascript:generate1NewItem()">CREATE 1 LARGE</a><a
+                    href="javascript:generate50NewItems(1000)" class="leftBorder">CREATE 50 SMALL</a><a
+                    href="javascript:generate50NewItems()">CREATE 50 LARGE</a><a
+                    href="javascript:clearAllEntries()" class="leftBorder">CLEAR ALL</a>
+
+                <span v-show="isLoading"><div  class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></span>
+
+
+            </div>
+
             <div class="results">
                 <ol id="example-1" type="1">
-                    <li v-for="item in content.slice().reverse()" :key="content.answer">
+                    <li v-for="item in content.slice().reverse()" :key="content.answer" v-on:click='item.expanded = !item.expanded'>
 
                         <div class="result">
                             <h2>Question: [[item.question]]</h2>
 
 
-                            <p class="answer" v-if="item.answer.length <= 700" >Answer: [[item.answer.join(', ')]]</p>
-                            <p class="answer" v-else >Answer: [[item.answer.slice(0, 700).join(', ')]]...</p>
+                            <p class="answer" v-if="item.answer.length <= 700 || item.expanded" >Answer: [[item.answer.join(', ')]]</p>
+                            <p class="answer" v-else>Answer: [[item.answer.slice(0, 700).join(', ')]]... <span class="expandPrompt">Click to show full result.</span></p>
 
 
                             <p class="timeTaken">This took [[item.time_taken]] ms to calculate. Answered at [[new Date(item.time_generated*1000).toLocaleString()]].</p>
