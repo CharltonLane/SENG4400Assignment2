@@ -49,7 +49,7 @@ def callback(message):
         authentication_header = {"username": "TrustedClient",
                                  "password": "supersecretpasswordtoposttothedashboard"}
         response = requests.post(target_api, json=output_message, headers=authentication_header)
-        print("Response: ", response)
+        # print("Response: ", response)
 
 
 def main():
