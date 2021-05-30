@@ -6,7 +6,7 @@ import requests
 from google.cloud import pubsub_v1
 
 target_api = os.environ.get("TARGET_API", "https://seng4400c3299743.ts.r.appspot.com/dashboard")
-#target_api = 'http://127.0.0.1:5000/dashboard' #  Debug code to test locally.
+target_api = 'http://127.0.0.1:5000/dashboard' #  Debug code to test locally.
 
 # Set authentication credentials environment variable.
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "seng4400c3299743-c62a01a02db1.json"
@@ -14,7 +14,7 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "seng4400c3299743-c62a01a02db1.js
 
 # I did not write this function. See the stackoverflow link for source.
 def primes(n):
-    """ Returns  a list of primes < n
+    """ Returns a list of primes < n
     https://stackoverflow.com/questions/2068372/fastest-way-to-list-all-primes-below-n/3035188#3035188 """
     sieve = [True] * n
     for i in range(3, int(n ** 0.5) + 1, 2):
@@ -45,7 +45,10 @@ def callback(message):
         output_message = generate_message(message_data["question"], answer, time_taken)
         print(output_message)
 
-        response = requests.post(target_api, json=output_message)
+        # Some very basic authentication. The dashboard only accepts posts from clients with these details.
+        authentication_header = {"username": "TrustedClient",
+                                 "password": "supersecretpasswordtoposttothedashboard"}
+        response = requests.post(target_api, json=output_message, headers=authentication_header)
         print("Response: ", response)
 
 
