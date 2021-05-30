@@ -26,9 +26,8 @@ def main():
     publisher = pubsub_v1.PublisherClient()
     topic_path = publisher.topic_path(project_id, topic_id)
 
-    i = 0
-    while i < 50:
-        i+=1
+
+    while True:
         data = create_message(random.randint(0, largest_random_number))
         print(data)
 
@@ -36,7 +35,7 @@ def main():
         future = publisher.publish(topic_path, data.encode("utf-8"))
 
         # Wait the given amount of time.
-        #time.sleep(publish_delay / 1000)
+        time.sleep(publish_delay / 1000)
 
 
 # Press the green button in the gutter to run the script.
