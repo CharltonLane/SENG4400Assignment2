@@ -27,4 +27,4 @@ Within static is the css and javascript files. these two files with index.html m
 main.py is the python/flask backend.
 
 All projects have a requirements.txt file. This provides alist of the required modules that should be installed to make the code run.
-The authentication key seng4400c3299743-c62a01a02db1.json is included in each project to authenticate the app to communicate with google cloud. There is likely a more secure way of storing this key but for simlicity I've done it like this.
+The authentication key seng4400c3299743-c62a01a02db1.json is included in each project to authenticate the app to communicate with google cloud. There is likely a more secure way of storing this key but for simplicity I've done it like this.
